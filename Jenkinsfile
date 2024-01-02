@@ -7,13 +7,13 @@ pipeline {
         stage('Build Maven'){
             steps{
                   checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/selvaCarrerLearn/devops-automation2']]])
-                   bat 'clean install'
+                   sh 'mvn clean compile'
                   }
         }
         stage('Build docker image'){
             steps{
                 script{
-                    bat 'docker build -t selvakumarsmddocker/devops-integration .'
+                    sh 'docker build -t selvakumarsmddocker/devops-integration .'
                 }
             }
         }
@@ -21,10 +21,10 @@ pipeline {
             steps{
                 script{
                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   bat 'docker login -u selvakumarsmddocker -p ${dockerhubpwd}'
+                   sh 'docker login -u selvakumarsmddocker -p ${dockerhubpwd}'
 
 }
-                   bat 'docker push selvakumarsmddocker/devops-integration'
+                   sh 'docker push selvakumarsmddocker/devops-integration'
                 }
             }
         }
