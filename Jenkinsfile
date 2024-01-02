@@ -7,8 +7,7 @@ pipeline {
         stage('Build Maven'){
             steps{
                   checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/selvaCarrerLearn/devops-automation2']]])
-                   bat 'Maven clean'
-                   bat 'Maven install'
+                   bat 'clean install'
                   }
         }
         stage('Build docker image'){
